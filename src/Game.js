@@ -19,18 +19,20 @@ Game.inherit(Observable, {
     },
     
     setMap: function(map) {
-        var checkpoint = G.restoreJson("checkpoint");
+        var checkpoint = {};
         
         if (typeof map == "string") {
             map = new Map(map);
         } else if (map.type == "scrollOrder") {
             this.map.cameraStart = {x:map.x, y:map.y};
             this.map.resetCamera();
+            this.map.spawn = map.spawn;
             this.map.spawnPlayerAt(map.spawn);
+            
             
             checkpoint.id = this.map.id;
             checkpoint.scroll = {x:map.x, y:map.y};
-            checkpoint.spawn =  map.spawn || "default";
+            checkpoint.spawn =  map.spawn || this.map.spawn;
             G.storeJson("checkpoint", checkpoint);
             
             return;
@@ -53,9 +55,9 @@ Game.inherit(Observable, {
         this.map.start();
         this.map.resetCamera();
         
-        checkpoint.mapId = this.map.id;
+        checkpoint.id = this.map.id;
         checkpoint.scroll = map.cameraStart;
-        checkpoint.playerSpawn =  map.spawn || "default";                
+        checkpoint.spawn =  this.map.spawn;                
         G.storeJson("checkpoint", checkpoint);
         
         G.storeItem("lastmap", this.map.id);

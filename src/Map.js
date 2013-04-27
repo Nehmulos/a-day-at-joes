@@ -4,7 +4,7 @@ function Map(id) {
     this.sprites = [];
     this.mapConnections = [];
     this.walls = [];
-    this.cameraStart = new cc.Point(0,0);
+    //this.cameraStart = new cc.Point(0,0);
     this.events = new Observable();
     this.dynamic = G.maplist.get(id);
     this.id = id;
@@ -80,7 +80,9 @@ Map.inherit(cc.Layer, {
     },
     
     resetCamera: function() {
-        Application.instance.game.camera.centerAt(this.cameraStart);
+        if (this.cameraStart) {
+            Application.instance.game.camera.centerAt(this.cameraStart);
+         }
         //this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y);
         //Application.instance.game.camera.trackedEntity = this.player;
     },
