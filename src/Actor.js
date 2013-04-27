@@ -1,20 +1,22 @@
 function Actor() {
     Actor.superclass.constructor.call(this);
-    this.speed = 3;
+    this.speed = 3.0;
     this.contentSize.width = 20;
-    this.contentSize.height = 5;
+    this.contentSize.height = 20;
     
-    var boxSprite = new BoxSprite();
-    this.addChild(boxSprite);
+    this.boxSprite = new BoxSprite();
+    this.addChild(this.boxSprite);
 }
 
 Actor.inherit(PhysicsNode, {
 
     defaultCreatePhysics:function(world) {
-        this.createPhysics(world, {});
+        this.createPhysics(world, {fixedRotation: true});
+        this.moveTowards({x: this.position.x+1, y: this.position.y+1});
     },
 
     moveTowards: function(position) {
+        //console.log(position);
         var xDistance = Math.abs(position.x - this.position.x);
         var yDistance = Math.abs(position.y - this.position.y);
         
@@ -36,50 +38,71 @@ Actor.inherit(PhysicsNode, {
             //this.position.x = position.x;
             //this.position.y = position.y;
             
-            //this.body.SetLinearVelocity(new b2Vec2(xDistance,yDistance));
-            this.body.SetPosition(new b2Vec2(position.x/PhysicsNode.physicsScale, position.y/PhysicsNode.physicsScale));
+            if (this.position.x != position.x || 
+                this.position.y != position.y) {
+                
+                this.body.SetPosition(new b2Vec2(position.x/PhysicsNode.physicsScale, position.y/PhysicsNode.physicsScale));
+                // stupid hack because 0,0 is bugged and prevents fruther movement
+                this.body.SetLinearVelocity(new b2Vec2(1,1));
+            }
         } else {
             // move
             if (position.x > this.position.x + deltaX) {
             } else if (position.x < this.position.x - deltaX) {
-                deltaX *=-1;                
+                deltaX *=-1.0;                
             } else {
-                deltaX = 0;
+                deltaX = 0.0;
             }
             if (position.y > this.position.y + deltaY) {
             } else if (position.y < this.position.y - deltaY){
-                deltaY *= -1;
+                deltaY *= -1.0;
             } else {
-                deltaY = 0;
+                deltaY = 0.0;
             }
             //this.body.ApplyForce(new b2Vec2(deltaX/PhysicsNode.physicsScale,deltaY/PhysicsNode.physicsScale), this.body.GetWorldCenter());
             this.body.SetLinearVelocity(new b2Vec2(deltaX,deltaY));
             //console.log(this.body.GetLinearVelocity());
         }
-        
+        // may enable rotation
+        //this.body.SetAngle(Utils.rotationToPoint(this.position, position));
     },
+    
+    update: function(dt) {
+        Actor.superclass.update.call(this, dt);
+        var vel = this.body.GetLinearVelocity();
+        // stupid hack because 0,0 is bugged and prevents fruther movement
+        if (vel.x != 1 || vel.y != 1) {
+            if (null == this.boxSprite.getAction({tag:"walk"})) {
+                this.boxSprite.runAction(this.boxSprite.walkAnimation);
+            }
+        }
+    }
 
 });
 
 function BoxSprite() {
     BoxSprite.superclass.constructor.call(this);
     this.contentSize.width = 20;
-    this.contentSize.height = 5;
+    this.contentSize.height = 20;
     
-    var stepUp = new cc.ScaleTo({duration: 0.4, scaleX:0.5, scaleY: 2});
+    var stepUp = new cc.ScaleTo({duration: 0.4, scaleX:0.6, scaleY: 1.6});
     var stepDown = new cc.ScaleTo({duration: 0.4, scaleX:1, scaleY: 1});
     this.walkAnimation = new cc.Sequence({actions:[stepUp, stepDown]});
-    this.runAction(new cc.RepeatForever(this.walkAnimation));
+    this.walkAnimation.tag = "walk";
+    //this.runAction(new cc.RepeatForever(this.walkAnimation));
 }
 
 BoxSprite.inherit(cc.Node, {
 
     draw: function(context) {
-        context.beginPath();
-        context.lineWidth = 20;
-        context.moveTo(this.position.x,this.position.y);
-        context.lineTo(this.position.x,this.position.y+5);
-        context.stroke();
-    }
+        context.fillStyle = "black";
+        context.fillRect(
+            this.position.x - this.contentSize.width/2,
+            this.position.y - this.contentSize.height/2,
+            this.contentSize.width,
+            this.contentSize.height
+        );
+    },
+    
 });
 

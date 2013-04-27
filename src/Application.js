@@ -31,30 +31,14 @@ function Application () {
     console.log(s.width)
     console.log(s.height)
     
-    var debugCanvas = document.createElement("canvas");
-    $("#cocos2d-demo").append(debugCanvas);
-    $(debugCanvas).addClass("debugcanvas")
+    this.debugCanvas = document.createElement("canvas");
+    $("#cocos2d-demo").append(this.debugCanvas);
+    $(this.debugCanvas).addClass("debugcanvas")
     
-    debugCanvas.width = $(debugCanvas).parent().width();
-    debugCanvas.height = $(debugCanvas).parent().height();
+    this.debugCanvas.width = $(this.debugCanvas).parent().width();
+    this.debugCanvas.height = $(this.debugCanvas).parent().height();
     
-    this.world = new b2World(new b2Vec2(0, 0), true);
-    this.world.SetContactListener(new CollisionHandler());
-    
-    this.worldborder = new PhysicsNode();
-    this.worldborder.type = "worldborder";
-    this.worldborder.position = new cc.Point(s.width/2, s.height);
-    this.worldborder.createPhysics(this.world, {boundingBox: new cc.Size(s.width+100, s.height*2), isSensor:true, isStatic:true})
-    
-    
-    //setup debug draw
-    var debugDraw = new b2DebugDraw()
-        debugDraw.SetSprite(debugCanvas.getContext("2d"))
-        debugDraw.SetDrawScale(PhysicsNode.physicsScale)
-        debugDraw.SetFillAlpha(0.5)
-        debugDraw.SetLineThickness(1.0)
-        debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
-    this.world.SetDebugDraw(debugDraw);
+    this.createWorld();
 }
 
 Application.inherit(cc.Layer, {
@@ -104,6 +88,31 @@ Application.inherit(cc.Layer, {
         this.game.init();
     },
     
+    createWorld: function(useBorder) {
+        this.world = new b2World(new b2Vec2(0, 0), true);
+        this.world.SetContactListener(new CollisionHandler());
+        
+        if (useBorder) {
+            this.worldborder = new PhysicsNode();
+            this.worldborder.type = "worldborder";
+            this.worldborder.position = new cc.Point(s.width/2, s.height);
+            this.worldborder.createPhysics(this.world, {
+                boundingBox: new cc.Size(s.width+100, s.height*2),
+                isSensor:true,
+                isStatic:true
+            });
+        }
+        
+        //setup debug draw
+        var debugDraw = new b2DebugDraw()
+            debugDraw.SetSprite(this.debugCanvas.getContext("2d"))
+            debugDraw.SetDrawScale(PhysicsNode.physicsScale)
+            debugDraw.SetFillAlpha(0.5)
+            debugDraw.SetLineThickness(1.0)
+            debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
+        this.world.SetDebugDraw(debugDraw);
+    },
+    
     // Here's the application's mainloop    
     update: function(dt) {
         
@@ -140,7 +149,7 @@ Application.inherit(cc.Layer, {
     
     fixedUpdate: function(dt) {
         this.world.Step(dt,3, 3);
-        this.world.ClearForces();
+        //this.world.ClearForces();
         
         
         var body = this.world.GetBodyList();

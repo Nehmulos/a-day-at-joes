@@ -10,11 +10,6 @@ Game.inherit(Observable, {
         var s = cc.Director.sharedDirector.winSize;
         this.setMap(new Map());
         this.camera = new Camera(cc.Director.sharedDirector.winSize, this);
-        
-        this.player = new Player();
-        this.player.position = new cc.Point(s.width/4,s.height/4);
-        this.player.defaultCreatePhysics(Application.instance.world);
-        this.map.addActor(this.player);
     },
     
     setMap: function(map) {
@@ -26,11 +21,20 @@ Game.inherit(Observable, {
         this.map.restCamera();
         this.root.addChild(this.map);
         this.fireEvent("changeMap", {newMap: map, oldMap: oldMap});
+        this.map.start();
     },
     
     update: function(dt) {
-        this.map.update(dt);
+        //this.map.update(dt);
         this.camera.update(dt);
+        // to restart map
+        if (Input.instance.keysDown[82]) {
+            this.map.start();
+        }
+    },
+    
+    restartMap: function() {
+
     },
     
     mouseDragged: function(event) {

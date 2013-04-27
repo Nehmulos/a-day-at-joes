@@ -4,10 +4,36 @@ function Map() {
     this.sprites = [];
     this.mapConnections = [];
     this.cameraStart = new cc.Point(0,0);
+    this.startPosition = new cc.Point(0,0);
     this.events = new Observable();
 }
 
 Map.inherit(cc.Layer, {
+
+    start: function() {
+        Application.instance.createWorld();
+    
+        this.player = new Player();
+        
+        this.player.position = new cc.Point(
+            this.startPosition.x,
+            this.startPosition.y
+        );
+        this.player.defaultCreatePhysics(Application.instance.world);
+        this.addActor(this.player);
+        
+        var c = new NamedSprite({name:"Door", borderColor:"green"});
+        this.addActor(c);
+        c. position = new cc.Point(400, 200);
+        
+        this.placeObjects();
+    },
+    
+    placeObjects: function() {
+        var wall = new Wall({x:200, y:200},{x:180, y:300}, 1);
+        wall.defaultCreatePhysics(Application.instance.world);
+        this.addActor(wall);
+    },
 
     restCamera: function() {
         this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y)
@@ -23,11 +49,6 @@ Map.inherit(cc.Layer, {
         this.addChild(actor);
     },
     
-    addBuilding: function(building) {
-        this.buildings.push(building);
-        this.addChild(building);
-    },
-    
     removeActor: function(actor) {
         var index = $.inArray(actor, this.actors);
         if (index != -1) {
@@ -37,16 +58,16 @@ Map.inherit(cc.Layer, {
     },
     
     update: function(dt) {
-        for (var i=0; i < this.actors.length; ++i) {
-            this.actors[i].update(dt);
-        }
+        //for (var i=0; i < this.actors.length; ++i) {
+        //    this.actors[i].update(dt);
+        //}
     },
     
     getActorOnPosition: function(point) {
         return this.getEntityOnPosition(point, "actor");
     },
     
-    // if current is given, loop through all matching entities to find the one after
+    // if current is given, loop through all matching entities to find the one
     // after the currently selected
     getEntityOnPosition: function(point, entityType, current) {
         entityType = entityType || "actor";
