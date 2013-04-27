@@ -4,7 +4,7 @@ function Player() {
 }
 
 Player.inherit(Actor, {
-
+    type:"player",
     update: function(dt) {
         Player.superclass.update.call(this,dt);
         //console.log(this.position);

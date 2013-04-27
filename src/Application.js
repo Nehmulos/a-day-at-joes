@@ -226,15 +226,17 @@ $(function() {
     
     function registerAudio(name) {
         Audiomanager.instance.load({ 
+            // TODO remove wav development line
+            "wav": "audio/"+name+".wav",
             "ogg": "audio/"+name+".ogg",
             "aac": "audio/conversions/"+name+".aac",
-            "wav": "audio/conversions/"+name+".wav",
+            //"wav": "audio/conversions/"+name+".wav",
             
         }, name); 
     }
     // preload audio files
     // TODO integrate audio loading into the preloader
-    //registerAudio("blub");
+    registerAudio("door");
     
     
     //registerAudio("village-tired");

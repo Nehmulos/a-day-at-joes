@@ -1,10 +1,22 @@
+DAY 1
 +Rectangle moving towards mouse cursor
 +walls
 -hazard areas
--respawn
--doors
--flavor text at bottom
++respawn
++doors
++flavor text at bottom
 -dialogues
 -npcs
 -field of view
 -stealth areas blocked from fov
+-enter the garage quest
+
+DAY 2
+-driving a car
+-guns
+-melee
+-escape from buero quest
+-escape on the streets quest
+-final showdown at the factory
+-soundeffects
+-music transitions

@@ -1,4 +1,4 @@
-function Map() {
+function Map(id) {
     Map.superclass.constructor.call(this);
     this.actors = [];
     this.sprites = [];
@@ -6,37 +6,46 @@ function Map() {
     this.cameraStart = new cc.Point(0,0);
     this.startPosition = new cc.Point(0,0);
     this.events = new Observable();
+    this.dynamic = G.maplist.get(id);
+    this.id = id;
 }
 
 Map.inherit(cc.Layer, {
 
     start: function() {
         Application.instance.createWorld();
+        var world = Application.instance.world;
     
         this.player = new Player();
         
+        
+        var startPos;
+        if (this.dynamic.startPositions) {
+            startPos = this.dynamic.startPositions["default"];
+        } else {
+            startPos = this.startPosition;
+        }
+        
+        
         this.player.position = new cc.Point(
-            this.startPosition.x,
-            this.startPosition.y
+            startPos.x,
+            startPos.y
         );
-        this.player.defaultCreatePhysics(Application.instance.world);
+        this.player.defaultCreatePhysics(world);
         this.addActor(this.player);
         
-        var c = new NamedSprite({name:"Door", borderColor:"green"});
-        this.addActor(c);
-        c. position = new cc.Point(400, 200);
         
-        this.placeObjects();
+        
+        this.dynamic.setup(this, world);
+        Application.instance.game.showFlavourText(
+            this.dynamic.flavour,
+            this.dynamic.flavourDuration
+        );
     },
     
-    placeObjects: function() {
-        var wall = new Wall({x:200, y:200},{x:180, y:300}, 1);
-        wall.defaultCreatePhysics(Application.instance.world);
-        this.addActor(wall);
-    },
-
-    restCamera: function() {
-        this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y)
+    resetCamera: function() {
+        this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y);
+        //Application.instance.game.camera.trackedEntity = this.player;
     },
     
     addSprite: function(sprite) {

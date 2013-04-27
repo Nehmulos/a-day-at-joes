@@ -31,10 +31,10 @@ CollisionHandler.inherit(b2ContactListener, {
         
         // example collision, check for other collisions by coping this if block
         if (objectA && objectB) {
-            if (objectA.type == "box" && objectB.type == "ground") {
-                this.boxGroundCollision(objectA, objectB);
-            } else if(objectB.type == "box" && objectA.type == "ground") {
-                this.boxGroundCollision(objectB, objectA);
+            if (objectA.type == "player" && objectB.type == "door") {
+                this.playerDoorCollision(objectA, objectB);
+            } else if(objectB.type == "player" && objectA.type == "door") {
+                this.playerDoorCollision(objectB, objectA);
             }
         }
     },
@@ -76,8 +76,9 @@ CollisionHandler.inherit(b2ContactListener, {
         Audiomanager.instance.play("blub");
     },
     
-    boxGroundCollisionEnd: function(box, ground) {
-        console.log("The box does no longer touch the ground");
-        Audiomanager.instance.play("blub");
+    playerDoorCollision: function(player, door) {
+        console.log("Door");
+        Application.instance.game.nextMap = door.target;
+        Audiomanager.instance.play("door");
     }
 });
