@@ -3,6 +3,7 @@ function Map(id) {
     this.actors = [];
     this.sprites = [];
     this.mapConnections = [];
+    this.walls = [];
     this.cameraStart = new cc.Point(0,0);
     this.startPosition = new cc.Point(0,0);
     this.events = new Observable();
@@ -34,13 +35,38 @@ Map.inherit(cc.Layer, {
         this.player.defaultCreatePhysics(world);
         this.addActor(this.player);
         
-        
-        
+        this.createWalls(this.dynamic.walls, world);
+                
         this.dynamic.setup(this, world);
         Application.instance.game.showFlavourText(
             this.dynamic.flavour,
             this.dynamic.flavourDuration
         );
+    },
+    
+    createWalls: function(dataArray, world) {
+        for (var i=0; i < dataArray.length; ++i) {
+            var data = dataArray[i];
+            var wall = new Wall(data.a,data.b, data.t);
+            wall.defaultCreatePhysics(world);
+            
+            if (data.alias) {
+                wall.alias = data.alias;
+            }
+            
+            this.addActor(wall);
+        }
+        this.walls.push(wall);
+    },
+    
+    removeWall: function(alias) {
+        for (var i=0; i < this.walls.length; ++i) {
+            if (this.walls[i].alias == alias) {
+                this.removeChild(this.walls[i]);
+                this.walls[i].destroyed = true;
+                this.walls.splice(i, 1);
+            }
+        }
     },
     
     resetCamera: function() {
@@ -63,6 +89,7 @@ Map.inherit(cc.Layer, {
         if (index != -1) {
             this.actors.splice(index,1);
             this.removeChild(actor);
+            actor.destroyed = true;
         }
     },
     

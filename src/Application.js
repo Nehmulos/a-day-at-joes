@@ -110,7 +110,7 @@ Application.inherit(cc.Layer, {
             debugDraw.SetFillAlpha(0.5)
             debugDraw.SetLineThickness(1.0)
             debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
-        this.world.SetDebugDraw(debugDraw);
+        //this.world.SetDebugDraw(debugDraw);
     },
     
     // Here's the application's mainloop    
@@ -144,7 +144,7 @@ Application.inherit(cc.Layer, {
         }
         */
         
-        //this.world.DrawDebugData();
+        this.world.DrawDebugData();
     },
     
     fixedUpdate: function(dt) {
@@ -187,7 +187,7 @@ $(function() {
     //director.backgroundColor = "rgb(200,200,200)"
     director.backgroundColor = "#FFF"
     director.attachInView(document.getElementById('cocos2d-demo'))
-    director.displayFPS = true
+    director.displayFPS = false;
     
     // Disable rightclick
     $("canvas").bind("contextmenu", function(e) {
