@@ -35,6 +35,14 @@ Utils.shuffleArray = function(array) {
   return array;
 }
 
+Utils.rotationToPoint = function(positionA, positionB) {
+    return Math.atan2(positionA.x -positionB.x ,positionB.y - positionA.y);
+}
+
+Utils.degreesToPoint = function(positionA, positionB) {
+    return -cc.radiansToDegrees(Utils.rotationToPoint(positionA, positionB));
+}
+
 if (!window.assert) {
     window.assert = function(condition) {
         if (!condition) {

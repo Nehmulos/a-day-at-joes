@@ -124,6 +124,8 @@ function Input() {
         "singlequote":222
     }
     
+    this.mouse = {x:0, y:0};
+    
     var _this = this;
     
     this.setKeyDown = function(keycode) {

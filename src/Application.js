@@ -84,6 +84,13 @@ Application.inherit(cc.Layer, {
         this.game.mouseWheel(event);
     },
     
+    mouseMoved: function(event) {
+        Input.instance.mouse = {
+            x:event.locationInCanvas.x,
+            y:event.locationInCanvas.y
+        }
+    },
+    
     // store inputs for realtime requests
     keyDown: function(event) {
         Input.instance.keysDown[event.keyCode] = true;
@@ -253,7 +260,7 @@ $(function() {
             app.mouseWheel(event);
             return false;
         }, false);
-
+        
         director.replaceScene(scene)
     });
     director.runPreloadScene();

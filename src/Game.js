@@ -7,8 +7,13 @@ function Game(root) {
 Game.inherit(Observable, {
 
     init: function() {
-        this.map = new Map();
+        var s = cc.Director.sharedDirector.winSize;
+        this.setMap(new Map());
         this.camera = new Camera(cc.Director.sharedDirector.winSize, this);
+        
+        this.player = new Player();
+        this.player.position = new cc.Point(s.width/4,s.height/4);
+        this.map.addActor(this.player);
     },
     
     setMap: function(map) {

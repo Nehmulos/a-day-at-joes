@@ -104,6 +104,9 @@ Camera.inherit(Observable, {
         
         p.x -= (this.game.map.position.x/this.game.map.scale);
         p.y -= (this.game.map.position.y/this.game.map.scale);
+        // why the fuck do I suddenly need this in a new project. I don't even..
+        p.x /=2;
+        p.y /=2;
         return p;
         
     },
