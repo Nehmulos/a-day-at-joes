@@ -13,6 +13,7 @@ Game.inherit(Observable, {
         
         this.player = new Player();
         this.player.position = new cc.Point(s.width/4,s.height/4);
+        this.player.defaultCreatePhysics(Application.instance.world);
         this.map.addActor(this.player);
     },
     

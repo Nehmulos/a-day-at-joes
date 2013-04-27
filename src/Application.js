@@ -31,7 +31,6 @@ function Application () {
     console.log(s.width)
     console.log(s.height)
     
-    /*
     var debugCanvas = document.createElement("canvas");
     $("#cocos2d-demo").append(debugCanvas);
     $(debugCanvas).addClass("debugcanvas")
@@ -39,9 +38,8 @@ function Application () {
     debugCanvas.width = $(debugCanvas).parent().width();
     debugCanvas.height = $(debugCanvas).parent().height();
     
-    this.world = new b2World(new b2Vec2(0, -10), true);
+    this.world = new b2World(new b2Vec2(0, 0), true);
     this.world.SetContactListener(new CollisionHandler());
-    
     
     this.worldborder = new PhysicsNode();
     this.worldborder.type = "worldborder";
@@ -57,7 +55,6 @@ function Application () {
         debugDraw.SetLineThickness(1.0)
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit)
     this.world.SetDebugDraw(debugDraw);
-    */
 }
 
 Application.inherit(cc.Layer, {
@@ -142,10 +139,10 @@ Application.inherit(cc.Layer, {
     },
     
     fixedUpdate: function(dt) {
-        //this.world.Step(dt,3, 3);
-        //this.world.ClearForces();
+        this.world.Step(dt,3, 3);
+        this.world.ClearForces();
         
-        /*
+        
         var body = this.world.GetBodyList();
         while(body) {
         
@@ -162,7 +159,7 @@ Application.inherit(cc.Layer, {
             }
             body = body.GetNext();
         }
-        */
+        
         
         this.game.update(dt);
         

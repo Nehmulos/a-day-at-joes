@@ -23,6 +23,7 @@ Camera.inherit(Observable, {
         
         
         var moveDelta = new cc.Point(0,0);
+        /*
         // left
         if (Input.instance.keysDown[37] || Input.instance.keysDown[65]) {
             moveDelta.x += this.scrollSpeed;
@@ -54,12 +55,14 @@ Camera.inherit(Observable, {
             
         }
         
+        
         // c reset camera position
         if (Input.instance.keysDown[67]) {
             this.game.map.position.x = 0;
             this.game.map.position.y = 0;
             this.trackedEntity = null;
         }
+        */
 
         if (moveDelta.x != 0 || moveDelta.y != 0) {
             this.fireEvent("move", {delta: moveDelta});
@@ -104,9 +107,6 @@ Camera.inherit(Observable, {
         
         p.x -= (this.game.map.position.x/this.game.map.scale);
         p.y -= (this.game.map.position.y/this.game.map.scale);
-        // why the fuck do I suddenly need this in a new project. I don't even..
-        p.x /=2;
-        p.y /=2;
         return p;
         
     },
