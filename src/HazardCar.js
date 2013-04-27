@@ -4,7 +4,7 @@ function HazardCar() {
         name:"car", 
         borderColor:"red",
         height:70,
-        width: 70
+        width: 50
     });
     this.addChild(this.sprite);
     this.contentSize = this.sprite.contentSize;
@@ -13,12 +13,13 @@ function HazardCar() {
 }
 
 HazardCar.inherit(PhysicsNode, {
-    type: "car"
+    type: "car",
     defaultCreatePhysics: function(world) {
         this.createPhysics(world,{});
-        this.body.setLinearVelocity(new b2Vec2(
+        
+        this.body.SetLinearVelocity(new b2Vec2(
             this.speed*this.directionMultiplier.x,
-            this.speed*this.directionMultiplier.y,
+            this.speed*this.directionMultiplier.y
         ));
     }
 });

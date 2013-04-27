@@ -28,6 +28,7 @@ G.maplist.add("01", "home", {
         kitchen.position = new cc.Point(400, 400)
         map.addActor(kitchen);
     },
+    update: function() {},
     flavour: "I've got to get going",
     flavourDuration: 10
 });

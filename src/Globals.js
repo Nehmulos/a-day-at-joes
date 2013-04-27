@@ -17,5 +17,5 @@ window.G.maplist = {
 
 window.G.restoreItem = function(key) { return localStorage.getItem("ld26_"+key)}
 window.G.storeItem = function(key,v) { return localStorage.setItem("ld26_"+key,v)}
-window.G.restoreJson = function(key) { return JSON.parse(G.restoreItem(key))}
+window.G.restoreJson = function(key) { return JSON.parse(G.restoreItem(key) || "{}")}
 window.G.storeJson = function(key,v) { return G.storeItem(key,JSON.stringify(v))}

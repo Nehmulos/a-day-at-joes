@@ -37,6 +37,14 @@ CollisionHandler.inherit(b2ContactListener, {
                 this.playerDoorCollision(objectB, objectA);
             }
         }
+        
+        if (objectA && objectB) {
+            if (objectA.type == "player" && objectB.type == "car") {
+                this.playerCarCollision(objectA, objectB);
+            } else if(objectB.type == "player" && objectA.type == "car") {
+                this.playerCarCollision(objectB, objectA);
+            }
+        }
     },
     
     EndContact: function(contact, manifold) {
@@ -46,9 +54,7 @@ CollisionHandler.inherit(b2ContactListener, {
         // example collision, check for other collisions by coping this if block
         if (objectA && objectB) {
             if (objectA.type == "box" && objectB.type == "ground") {
-                this.boxGroundCollisionEnd(objectA, objectB);      
             } else if(objectB.type == "box" && objectA.type == "ground") {
-                this.boxGroundCollisionEnd(objectB, objectA);      
             }
             
             // freeze
@@ -70,15 +76,13 @@ CollisionHandler.inherit(b2ContactListener, {
         }
     },
     
-    // custom functions to handle the collision of 2 objects
-    boxGroundCollision: function(box, ground) {
-        console.log("The box touches the ground");  
-        Audiomanager.instance.play("blub");
-    },
-    
     playerDoorCollision: function(player, door) {
-        console.log("Door");
         Application.instance.game.nextMap = door.target;
         Audiomanager.instance.play("door");
+    },
+    
+    playerCarCollision: function(player, car) {
+        Application.instance.game.death("carcrash");
+        Audiomanager.instance.play("carcrash");
     }
 });

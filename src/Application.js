@@ -92,12 +92,13 @@ Application.inherit(cc.Layer, {
         this.world = new b2World(new b2Vec2(0, 0), true);
         this.world.SetContactListener(new CollisionHandler());
         
-        if (useBorder) {
+        if (useBorder || true) {
+            var s = cc.Director.sharedDirector.winSize
             this.worldborder = new PhysicsNode();
             this.worldborder.type = "worldborder";
             this.worldborder.position = new cc.Point(s.width/2, s.height);
             this.worldborder.createPhysics(this.world, {
-                boundingBox: new cc.Size(s.width+100, s.height*2),
+                boundingBox: new cc.Size(s.width*10, s.height*10),
                 isSensor:true,
                 isStatic:true
             });
@@ -237,6 +238,7 @@ $(function() {
     // preload audio files
     // TODO integrate audio loading into the preloader
     registerAudio("door");
+    registerAudio("carcrash");
     
     
     //registerAudio("village-tired");

@@ -1,7 +1,7 @@
-function Door(target) {
+function Door(target, name) {
     Door.superclass.constructor.call(this);
 
-    this.sprite = new NamedSprite({name:"Door", borderColor:"green"});
+    this.sprite = new NamedSprite({name:name || "Door", borderColor:"green"});
     this.addChild(this.sprite);
     this.contentSize = this.sprite.contentSize;
     this.target = target;

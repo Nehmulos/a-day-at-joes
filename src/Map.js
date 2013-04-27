@@ -5,7 +5,6 @@ function Map(id) {
     this.mapConnections = [];
     this.walls = [];
     this.cameraStart = new cc.Point(0,0);
-    this.startPosition = new cc.Point(0,0);
     this.events = new Observable();
     this.dynamic = G.maplist.get(id);
     this.id = id;
@@ -20,18 +19,8 @@ Map.inherit(cc.Layer, {
         this.player = new Player();
         this.player.zOrder = 5;
         
-        var startPos;
-        if (this.dynamic.startPositions) {
-            startPos = this.dynamic.startPositions["default"];
-        } else {
-            startPos = this.startPosition;
-        }
+        this.spawnPlayerAt(this.spawn);
         
-        
-        this.player.position = new cc.Point(
-            startPos.x,
-            startPos.y
-        );
         this.player.defaultCreatePhysics(world);
         this.addActor(this.player);
         
@@ -42,6 +31,27 @@ Map.inherit(cc.Layer, {
             this.dynamic.flavour,
             this.dynamic.flavourDuration
         );
+    },
+    
+    spawnPlayerAt: function(spawnPoint) {
+        var startPos;
+        if (this.dynamic.startPositions) {
+            startPos = this.dynamic.startPositions[spawnPoint || "default"];
+        } else {
+            startPos = new cc.Point(0,0);
+        }
+        
+        this.player.position = new cc.Point(
+            startPos.x,
+            startPos.y
+        );
+        
+        if (this.player.body) {
+            this.player.body.SetPosition(new b2Vec2(
+                startPos.x/PhysicsNode.physicsScale, 
+                startPos.y/PhysicsNode.physicsScale
+            ));
+        }
     },
     
     createWalls: function(dataArray, world) {
@@ -70,7 +80,8 @@ Map.inherit(cc.Layer, {
     },
     
     resetCamera: function() {
-        this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y);
+        Application.instance.game.camera.centerAt(this.cameraStart);
+        //this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y);
         //Application.instance.game.camera.trackedEntity = this.player;
     },
     
@@ -97,6 +108,7 @@ Map.inherit(cc.Layer, {
         //for (var i=0; i < this.actors.length; ++i) {
         //    this.actors[i].update(dt);
         //}
+        this.dynamic.update(dt);
     },
     
     getActorOnPosition: function(point) {

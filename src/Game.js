@@ -10,17 +10,40 @@ Game.inherit(Observable, {
         var s = cc.Director.sharedDirector.winSize;
         this.camera = new Camera(cc.Director.sharedDirector.winSize, this);
         
-        var startMap = G.restoreItem("lastmap") || "01";
-        this.setMap(new Map(startMap));
+        var startMap = G.restoreJson("checkpoint") || "01";
+        if (typeof startMap != "string") {
+            startMap.type = "loadOrder";
+        }
+        
+        this.setMap(startMap);
     },
     
     setMap: function(map) {
-        if (this.map) {
-            this.map.parent.removeChild(this.map);
-        }
+        var checkpoint = G.restoreJson("checkpoint");
         
         if (typeof map == "string") {
             map = new Map(map);
+        } else if (map.type == "scrollOrder") {
+            this.map.cameraStart = {x:map.x, y:map.y};
+            this.map.resetCamera();
+            this.map.spawnPlayerAt(map.spawn);
+            
+            checkpoint.id = this.map.id;
+            checkpoint.scroll = {x:map.x, y:map.y};
+            checkpoint.spawn =  map.spawn || "default";
+            G.storeJson("checkpoint", checkpoint);
+            
+            return;
+        } else if (map.type == "loadOrder") {
+            var spawn = map.spawn;
+            var scroll = map.scroll;
+            map = new Map(map.id);
+            map.spawn = spawn;
+            map.cameraStart = scroll;
+        }
+        
+        if (this.map) {
+            this.map.parent.removeChild(this.map);
         }
         
         var oldMap = this.map; // store for event
@@ -29,6 +52,12 @@ Game.inherit(Observable, {
         this.fireEvent("changeMap", {newMap: map, oldMap: oldMap});
         this.map.start();
         this.map.resetCamera();
+        
+        checkpoint.mapId = this.map.id;
+        checkpoint.scroll = map.cameraStart;
+        checkpoint.playerSpawn =  map.spawn || "default";                
+        G.storeJson("checkpoint", checkpoint);
+        
         G.storeItem("lastmap", this.map.id);
     },
     
@@ -46,12 +75,19 @@ Game.inherit(Observable, {
             }
         }
     
-        //this.map.update(dt);
+        this.map.update(dt);
         this.camera.update(dt);
         // to restart map
         if (Input.instance.keysDown[82]) {
             this.restartMap();
         }
+    },
+    
+    death: function(reason) {
+        this.nextMap = this.map.id;
+        var deathCount = G.restoreJson("deathCount");
+        deathCount[reason] = deathCount[reason] +1 || 1;
+        G.storeJson("deathCount", deathCount);
     },
     
     showFlavourText: function(text, duration) {
