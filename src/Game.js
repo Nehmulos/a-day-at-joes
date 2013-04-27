@@ -9,7 +9,9 @@ Game.inherit(Observable, {
     init: function() {
         var s = cc.Director.sharedDirector.winSize;
         this.camera = new Camera(cc.Director.sharedDirector.winSize, this);
-        this.setMap(new Map("01"));
+        
+        var startMap = G.restoreItem("lastmap") || "01";
+        this.setMap(new Map(startMap));
     },
     
     setMap: function(map) {
@@ -20,7 +22,6 @@ Game.inherit(Observable, {
         if (typeof map == "string") {
             map = new Map(map);
         }
-    
         
         var oldMap = this.map; // store for event
         this.map = map;
@@ -28,6 +29,7 @@ Game.inherit(Observable, {
         this.fireEvent("changeMap", {newMap: map, oldMap: oldMap});
         this.map.start();
         this.map.resetCamera();
+        G.storeItem("lastmap", this.map.id);
     },
     
     update: function(dt) {

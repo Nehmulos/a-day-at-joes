@@ -18,7 +18,7 @@ Map.inherit(cc.Layer, {
         var world = Application.instance.world;
     
         this.player = new Player();
-        
+        this.player.zOrder = 5;
         
         var startPos;
         if (this.dynamic.startPositions) {
