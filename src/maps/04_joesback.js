@@ -33,6 +33,12 @@ G.maplist.add("04", "joesback", {
         workbenchr.rotation = 90;
         workbenchr.defaultCreatePhysics(world);
         map.addActor(workbenchr);
+        
+        var guard = new NpcGuard();
+        guard.position = new cc.Point(360, 250)
+        guard.defaultCreatePhysics(world);
+        map.addChild(guard);
+        
     },
     update: function() {}
 });

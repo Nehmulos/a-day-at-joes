@@ -5,6 +5,7 @@ function Actor(name) {
     this.contentSize.height = 20;
     
     this.boxSprite = new BoxSprite();
+    this.boxSprite.zOrder = 2;
     this.addChild(this.boxSprite);
     
     this.name = name || "Bob";

@@ -43,6 +43,14 @@ Utils.degreesToPoint = function(positionA, positionB) {
     return -cc.radiansToDegrees(Utils.rotationToPoint(positionA, positionB));
 }
 
+Utils.pointOnCircle = function(origin, radius, rotationInDegrees) {
+    var rot = cc.degreesToRadians(rotationInDegrees)
+    return {
+        x: origin.x + (radius * Math.cos(rot)),
+        y: origin.y + (radius * Math.sin(rot)),
+    }
+}
+
 if (!window.assert) {
     window.assert = function(condition) {
         if (!condition) {
