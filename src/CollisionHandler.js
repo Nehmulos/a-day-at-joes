@@ -45,6 +45,14 @@ CollisionHandler.inherit(b2ContactListener, {
                 this.playerCarCollision(objectB, objectA);
             }
         }
+        
+        if (objectA && objectB) {
+            if (objectA.type == "player" && objectB.type == "npc") {
+                this.playerNpcCollision(objectA, objectB);
+            } else if(objectB.type == "player" && objectA.type == "npc") {
+                this.playerNpcCollision(objectB, objectA);
+            }
+        }
     },
     
     EndContact: function(contact, manifold) {
@@ -84,5 +92,9 @@ CollisionHandler.inherit(b2ContactListener, {
     playerCarCollision: function(player, car) {
         Application.instance.game.death("carcrash");
         Audiomanager.instance.play("carcrash");
+    },
+    
+    playerNpcCollision: function(player, npc) {
+        npc.onBump(player);
     }
 });

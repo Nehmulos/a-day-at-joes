@@ -5,8 +5,8 @@ DAY 1
 +respawn
 +doors
 +flavor text at bottom
--dialogues
--npcs
++dialogues
++npcs
 -field of view
 -stealth areas blocked from fov
 -enter the garage quest

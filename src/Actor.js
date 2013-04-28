@@ -82,7 +82,9 @@ Actor.inherit(PhysicsNode, {
     },
     
     say: function(text) {
-        Application.instance.game.chat.say(this, text);
+        if (text && text.length > 0) {
+            Application.instance.game.chat.say(this, text);
+        }
     }
 });
 

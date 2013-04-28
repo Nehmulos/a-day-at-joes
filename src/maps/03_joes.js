@@ -45,9 +45,10 @@ G.maplist.add("03", "joes", {
         counter.position = new cc.Point(540, 300);
         map.addActor(counter);
         
-        var guest = new Actor();
+        var guest = new Npc("Bob");
         guest.position = new cc.Point(200, 100)
         guest.defaultCreatePhysics(world);
+        guest.bumpLines = ["hey, watch where you're going!"];
         map.addActor(guest);
     },
     update: function() {},

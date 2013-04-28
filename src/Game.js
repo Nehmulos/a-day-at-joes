@@ -15,6 +15,12 @@ Game.inherit(Observable, {
             startMap.type = "loadOrder";
         }
         
+        this.chat = new Chat();
+        this.chat.anchorPoint = new cc.Point(0, 1);
+        this.chat.position.y = s.height;
+        this.chat.zOrder = 99;
+        this.root.addChild(this.chat);
+        
         this.setMap(startMap);
     },
     
@@ -28,7 +34,6 @@ Game.inherit(Observable, {
             this.map.resetCamera();
             this.map.spawn = map.spawn;
             this.map.spawnPlayerAt(map.spawn);
-            
             
             checkpoint.id = this.map.id;
             checkpoint.spawn =  map.spawn || this.map.spawn;
@@ -72,7 +77,8 @@ Game.inherit(Observable, {
                 this.flavourText.update(dt);
             }
         }
-    
+        
+        this.chat.update(dt);
         this.map.update(dt);
         this.camera.update(dt);
         // to restart map
