@@ -74,6 +74,7 @@ Actor.inherit(PhysicsNode, {
         if (vel.x != 1 || vel.y != 1) {
             if (null == this.boxSprite.getAction({tag:"walk"})) {
                 this.boxSprite.runAction(this.boxSprite.walkAnimation);
+                Audiomanager.instance.play("walk" + Math.floor(randomInRange(1,5)));
             }
         }
     }
