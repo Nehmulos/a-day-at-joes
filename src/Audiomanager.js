@@ -23,7 +23,9 @@ Audiomanager.inherit(Object, {
     audios:[],
     
     play: function(alias) {
-        this.audios[alias].play();
+        if (!G.noSound) {
+            this.audios[alias].play();
+        }
     },
     
     playMusic: function(alias) {
@@ -53,9 +55,10 @@ Audiomanager.inherit(Object, {
                 this.audios[alias] = new Audio(urls[format]);
                 this.audios[alias].load();
                 console.log("loaded " + alias + " as " + format);
-                this.audios[alias].volume = 0.1;
                 if (G.noSound) {
                     this.audios[alias].volume = 0;
+                } else {
+                    this.audios[alias].volume = 0.1;
                 }
                 break;
             }

@@ -9,7 +9,7 @@ G.maplist.add("02", "streets", {
         {a:{x:50, y:420}, b:{x:0, y:420}, t:10},
         {a:{x:50, y:60}, b:{x:0, y:60}, t:10},
         // joes
-        {a:{x:760, y:420}, b:{x:760, y:60}, t:10},
+        {a:{x:760, y:480}, b:{x:760, y:60}, t:10},
         {a:{x:760, y:60}, b:{x:1400, y:60}, t:10},
     ], 
     setup: function(map, world) {
@@ -71,6 +71,15 @@ G.maplist.add("02", "streets", {
         scrollDown.defaultCreatePhysics(world);
         map.addActor(scrollDown);
         
+        
+        var joesSign = new NamedSprite({
+            name:"Joe's Dinner & Coffee",
+            borderColor:"brown",
+            height:100,
+            width: 200
+        });
+        joesSign.position = new cc.Point(1000, 270);
+        map.addSprite(joesSign);
         
         this.timers = [5, 2, 1, 4];
         this.spawnPositions = [
