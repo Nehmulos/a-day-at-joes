@@ -51,7 +51,7 @@ G.maplist.add("02", "streets", {
         grass2.position = new cc.Point(400, 170);
         map.addSprite(grass2);
         
-        var door = new Door("01");
+        var door = new Door("01", null, "door");
         door.position = new cc.Point(50, 350);
         door.defaultCreatePhysics(world);
         map.addActor(door);

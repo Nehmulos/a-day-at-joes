@@ -1,6 +1,7 @@
 G.maplist.add("01", "home", {
     startPositions:{
-        "default": {x:200, y:380, flavour: "I've got to get going"}
+        "default": {x:200, y:380, flavour: "I've got to get going"},
+        "door": {x:600, y:350, flavour: "I've got to get going"}
     }, 
     walls: [
         // bounding

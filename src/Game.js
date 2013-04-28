@@ -12,7 +12,7 @@ Game.inherit(Observable, {
         
         
         var startMap = G.restoreJson("checkpoint");
-        if (!G.restoreItem("checkpoint")) {
+        if (!startMap || !startMap.id) {
             startMap = "01";
         }
         if (typeof startMap != "string") {
