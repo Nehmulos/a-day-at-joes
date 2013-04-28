@@ -1,18 +1,20 @@
-function Actor() {
+function Actor(name) {
     Actor.superclass.constructor.call(this);
-    this.speed = 3.0;
+    this.speed = 3;
     this.contentSize.width = 20;
     this.contentSize.height = 20;
     
     this.boxSprite = new BoxSprite();
     this.addChild(this.boxSprite);
+    
+    this.name = name || "Bob";
 }
 
 Actor.inherit(PhysicsNode, {
 
     defaultCreatePhysics:function(world) {
-        this.createPhysics(world, {fixedRotation: true});
-        this.moveTowards({x: this.position.x+1, y: this.position.y+1});
+        this.createPhysics(world, {fixedRotation: true, damping:4});
+        //this.moveTowards({x: this.position.x+1, y: this.position.y+1});
     },
 
     moveTowards: function(position) {
@@ -71,20 +73,24 @@ Actor.inherit(PhysicsNode, {
         Actor.superclass.update.call(this, dt);
         var vel = this.body.GetLinearVelocity();
         // stupid hack because 0,0 is bugged and prevents fruther movement
-        if (vel.x != 1 || vel.y != 1) {
+        if ((vel.x != 1 || vel.y != 1) && (vel.x != 0 || vel.y != 0)) {
             if (null == this.boxSprite.getAction({tag:"walk"})) {
                 this.boxSprite.runAction(this.boxSprite.walkAnimation);
                 Audiomanager.instance.play("walk" + Math.floor(randomInRange(1,5)));
             }
         }
+    },
+    
+    say: function(text) {
+        Application.instance.game.chat.say(this, text);
     }
-
 });
 
 function BoxSprite() {
     BoxSprite.superclass.constructor.call(this);
     this.contentSize.width = 20;
     this.contentSize.height = 20;
+    this.color = "black";
     
     var stepUp = new cc.ScaleTo({duration: 0.4, scaleX:0.6, scaleY: 1.6});
     var stepDown = new cc.ScaleTo({duration: 0.4, scaleX:1, scaleY: 1});
@@ -96,7 +102,7 @@ function BoxSprite() {
 BoxSprite.inherit(cc.Node, {
 
     draw: function(context) {
-        context.fillStyle = "black";
+        context.fillStyle = this.color;
         context.fillRect(
             this.position.x - this.contentSize.width/2,
             this.position.y - this.contentSize.height/2,

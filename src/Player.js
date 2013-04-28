@@ -5,6 +5,12 @@ function Player() {
 
 Player.inherit(Actor, {
     type:"player",
+    
+    defaultCreatePhysics:function(world) {
+        this.createPhysics(world, {fixedRotation: true, damping:0});
+        this.moveTowards({x: this.position.x+1, y: this.position.y+1});
+    },
+    
     update: function(dt) {
         Player.superclass.update.call(this,dt);
         //console.log(this.position);

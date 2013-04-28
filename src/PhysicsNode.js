@@ -81,10 +81,11 @@ PhysicsNode.inherit(cc.Node, {
                        
         bodyDef.position = new b2Vec2(this.position.x / PhysicsNode.physicsScale,
                                             this.position.y / PhysicsNode.physicsScale);
-                                            
+        
         bodyDef.angle = cc.degreesToRadians(-this.rotation);
         bodyDef.fixedRotation = args.fixedRotation ? args.fixedRotation : false;
         bodyDef.bullet = args.isBullet != undefined ? args.isBullet : false;
+        bodyDef.linearDamping = args.damping || 0.0;
 
         var fixDef = new b2FixtureDef();
         fixDef.density = args.density ? args.density : (args.isStatic ? 0.0 : 1.0);

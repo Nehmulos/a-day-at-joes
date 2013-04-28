@@ -1,6 +1,6 @@
 G.maplist.add("03", "joes", {
     startPositions:{
-        "default": {x:600, y:100, flavour:"but I'm not in catering business"}
+        "default": {x:500, y:100, flavour:"but I'm not in catering business"}
     },
     walls: [
         // bounding
@@ -28,13 +28,13 @@ G.maplist.add("03", "joes", {
         staffdoor.defaultCreatePhysics(world);
         map.addActor(staffdoor);
         
-        var bed = new NamedSprite({name:"table", borderColor:"teal"});
-        bed.position = new cc.Point(80, 400)
-        map.addActor(bed);
+        var table = new NamedSprite({name:"table", borderColor:"teal", height:40});
+        table.position = new cc.Point(140, 100)
+        map.addActor(table);
         
-        var chair = new NamedSprite({name:"chair", borderColor:"darkblue"});
-        chair.position = new cc.Point(80, 300)
-        map.addActor(chair);
+        var chairl = new NamedSprite({name:"chair", borderColor:"darkblue"});
+        chairl.position = new cc.Point(80, 100)
+        map.addActor(chairl);
         
         var counter = new NamedSprite({
             name:"counter",
@@ -44,6 +44,11 @@ G.maplist.add("03", "joes", {
         });
         counter.position = new cc.Point(540, 300);
         map.addActor(counter);
+        
+        var guest = new Actor();
+        guest.position = new cc.Point(200, 100)
+        guest.defaultCreatePhysics(world);
+        map.addActor(guest);
     },
     update: function() {},
     flavour: "I've got to get going",
