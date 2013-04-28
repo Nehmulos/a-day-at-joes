@@ -10,7 +10,11 @@ Game.inherit(Observable, {
         var s = cc.Director.sharedDirector.winSize;
         this.camera = new Camera(cc.Director.sharedDirector.winSize, this);
         
-        var startMap = G.restoreJson("checkpoint") || "01";
+        
+        var startMap = G.restoreJson("checkpoint");
+        if (!G.restoreItem("checkpoint")) {
+            startMap = "01";
+        }
         if (typeof startMap != "string") {
             startMap.type = "loadOrder";
         }

@@ -5,7 +5,7 @@ function FlavourText(text, duration, parent) {
     this.duration = duration;
     this.label = new cc.Label({
         string:text,
-        fontName:'"Courier New", Courier, monospace bold',
+        fontName:'Courier New, Courier, monospace bold',
         fontColor: "#333",
         fontSize: "40",
         fontStyle: "bold"

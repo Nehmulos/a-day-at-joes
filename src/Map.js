@@ -1,6 +1,7 @@
 function Map(id) {
     Map.superclass.constructor.call(this);
     this.actors = [];
+    this.customActors = []; // without physics or graphics
     this.sprites = [];
     this.mapConnections = [];
     this.walls = [];
@@ -100,6 +101,10 @@ Map.inherit(cc.Layer, {
         this.addChild(actor);
     },
     
+    addCustomActor: function(actor) {
+        this.customActors.push(actor);
+    },
+    
     removeActor: function(actor) {
         var index = $.inArray(actor, this.actors);
         if (index != -1) {
@@ -110,9 +115,14 @@ Map.inherit(cc.Layer, {
     },
     
     update: function(dt) {
-        //for (var i=0; i < this.actors.length; ++i) {
-        //    this.actors[i].update(dt);
-        //}
+        for (var i=0; i < this.customActors.length; ++i) {
+            if (this.customActors[i].destroyed) {
+                this.customActors.splice(i,1);
+                --i;
+                continue;
+            }
+            this.customActors[i].update(dt);
+        }
         this.dynamic.update(dt);
     },
     

@@ -46,8 +46,7 @@ Actor.inherit(PhysicsNode, {
                 this.position.y != position.y) {
                 
                 this.body.SetPosition(new b2Vec2(position.x/PhysicsNode.physicsScale, position.y/PhysicsNode.physicsScale));
-                // stupid hack because 0,0 is bugged and prevents fruther movement
-                this.body.SetLinearVelocity(new b2Vec2(1,1));
+                this.body.SetLinearVelocity(new b2Vec2(0,0));
             }
         } else {
             // move
@@ -63,9 +62,19 @@ Actor.inherit(PhysicsNode, {
             } else {
                 deltaY = 0.0;
             }
-            //this.body.ApplyForce(new b2Vec2(deltaX/PhysicsNode.physicsScale,deltaY/PhysicsNode.physicsScale), this.body.GetWorldCenter());
+
+            // things can get stuck when velocity is set to 0,0
+            // give em a flick to fix it
+            var vel = this.body.GetLinearVelocity();
+            if (vel.x != 0 || vel.y != 0) {
+                this.body.ApplyImpulse(
+                    new b2Vec2(0.001/PhysicsNode.physicsScale,
+                               0.001/PhysicsNode.physicsScale),
+                    this.body.GetWorldCenter()
+                );
+            }
+            
             this.body.SetLinearVelocity(new b2Vec2(deltaX,deltaY));
-            //console.log(this.body.GetLinearVelocity());
         }
         // may enable rotation
         //this.body.SetAngle(Utils.rotationToPoint(this.position, position));
@@ -74,8 +83,7 @@ Actor.inherit(PhysicsNode, {
     update: function(dt) {
         Actor.superclass.update.call(this, dt);
         var vel = this.body.GetLinearVelocity();
-        // stupid hack because 0,0 is bugged and prevents fruther movement
-        if ((vel.x != 1 || vel.y != 1) && (vel.x != 0 || vel.y != 0)) {
+        if (vel.x != 0 || vel.y != 0) {
             if (null == this.boxSprite.getAction({tag:"walk"})) {
                 this.boxSprite.runAction(this.boxSprite.walkAnimation);
                 Audiomanager.instance.play("walk" + Math.floor(randomInRange(1,5)));
@@ -86,6 +94,7 @@ Actor.inherit(PhysicsNode, {
     say: function(text) {
         if (text && text.length > 0) {
             Application.instance.game.chat.say(this, text);
+            this.boxSprite.runAction(this.boxSprite.talkAnimation);
         }
     }
 });
@@ -100,6 +109,9 @@ function BoxSprite() {
     var stepDown = new cc.ScaleTo({duration: 0.4, scaleX:1, scaleY: 1});
     this.walkAnimation = new cc.Sequence({actions:[stepUp, stepDown]});
     this.walkAnimation.tag = "walk";
+    
+    this.talkAnimation = new cc.Sequence({actions:[stepUp, stepDown]});
+    this.talkAnimation.tag = "talk";
     //this.runAction(new cc.RepeatForever(this.walkAnimation));
 }
 

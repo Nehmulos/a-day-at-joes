@@ -34,11 +34,47 @@ G.maplist.add("04", "joesback", {
         workbenchr.defaultCreatePhysics(world);
         map.addActor(workbenchr);
         
-        var guard = new NpcGuard();
-        guard.position = new cc.Point(90, 320)
-        guard.defaultCreatePhysics(world);
-        map.addChild(guard);
+        //////////
+        // ACTORS
+        //////////
+        var status = G.restoreJson("storyProgress");
+        if (status["03_joes_keyQuest"] == "got") {
+            var guard = new NpcGuard();
+            guard.position = new cc.Point(90, 320)
+            guard.defaultCreatePhysics(world);
+            map.addChild(guard);
+        } else {
+            // lock garage
+            garageDoor.target = null;
         
+            var eddie = new Npc("Eddie");
+            eddie.position = new cc.Point(250, 220)
+            eddie.defaultCreatePhysics(world);
+            map.addChild(eddie);
+            
+            var richard = new Npc("Richard");
+            richard.position = new cc.Point(400, 220)
+            richard.defaultCreatePhysics(world);
+            map.addChild(richard);
+            
+            var richardFollow = function() {
+                richard.follow = map.player;
+                garageDoor.target = "05";
+                status["03_joes_keyQuest"] = "unaware";
+                G.storeJson("storyProgress", status);
+            }
+            
+            var c = new Conversation([
+                new ConversationLine({next:1}),
+                new ConversationLine({actor:richard, text:"Hi", next:6}),
+                new ConversationLine({actor:eddie, text:"I'm very busy today.", next:3}),
+                new ConversationLine({actor:eddie, text:"You've gotta to take the freshman for a ride.", next:3}),
+                new ConversationLine({actor:richard, text:"I won't be a burden.", next:3, nextCallback: richardFollow}),
+            ]);
+            map.addCustomActor(c);
+            c.start();
+        }
+
     },
     update: function() {}
 });

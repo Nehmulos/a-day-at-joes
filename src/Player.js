@@ -1,5 +1,5 @@
 function Player() {
-    Player.superclass.constructor.call(this);
+    Player.superclass.constructor.call(this, "I");
     this.lastTarget = {x:0, y:0};
 }
 
