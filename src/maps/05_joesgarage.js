@@ -44,21 +44,42 @@ G.maplist.add("05", "joesgarage", {
         // ACTORS
         ////////////
         var status = G.restoreJson("storyProgress");
-        if (status["03_joes_keyQuest"] == "got") {
+        if (status["03_joes_keyQuest"] == "got" ||
+            status["03_joes_keyQuest"] == "end") {
             car.onTouch = function(actor) {
                 if (actor == map.player) {
+                    
+                    status["03_joes_keyQuest"] = "end";
+                    G.storeJson("storyProgress", status);
+                    
                     Application.instance.game.nextMap = {
                         type: "loadOrder",
-                        id: "06"
+                        id: "07"
                     }
                 }
             }
+            
+            var richard = new Npc("Richard");
+            richard.position = new cc.Point(150, 290)
+            richard.defaultCreatePhysics(world);
+            richard.follow = car;
+            richard.bumpLines = ["Go, unlock the car."];
+            map.addChild(richard);
+            
         } else if (status["03_joes_keyQuest"] == "aware") {
+            
+            var richard = new Npc("Richard");
+            richard.position = new cc.Point(150, 290)
+            richard.defaultCreatePhysics(world);
+            richard.follow = car;
+            richard.bumpLines = ["Come on get the keys from the counter."];
+            map.addChild(richard);
             
         } else {
             car.onTouch = function(actor) {
                 if (actor == map.player) {
-                    actor.say("I forgot the key's at the counter", 10);
+                    actor.say("I forgot the key's at the counter", 15);
+                    richard.bumpLines = ["Come on get the keys from the counter."];
                     
                     status["03_joes_keyQuest"] = "aware";
                     G.storeJson("storyProgress", status);

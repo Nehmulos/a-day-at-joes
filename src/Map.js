@@ -36,10 +36,7 @@ Map.inherit(cc.Layer, {
             spawnPoint = spawnPoint || "default";
             startPos = this.dynamic.startPositions[spawnPoint];
             
-            Application.instance.game.showFlavourText(
-                this.dynamic.startPositions[spawnPoint].flavour,
-                this.dynamic.startPositions[spawnPoint].flavourDuration
-            );
+            this.showFlavourText(this.dynamic.startPositions[spawnPoint]);
             this.resetCamera(this.dynamic.startPositions[spawnPoint].scroll);
         } else {
             startPos = new cc.Point(0,0);
@@ -56,6 +53,13 @@ Map.inherit(cc.Layer, {
                 startPos.y/PhysicsNode.physicsScale
             ));
         }
+    },
+    
+    showFlavourText: function(object) {
+        Application.instance.game.showFlavourText(
+            object.flavour,
+            object.flavourDuration
+        );
     },
     
     createWalls: function(dataArray, world) {

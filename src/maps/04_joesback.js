@@ -39,16 +39,33 @@ G.maplist.add("04", "joesback", {
         // ACTORS
         //////////
         var status = G.restoreJson("storyProgress");
-        if (status["03_joes_keyQuest"] == "got") {
+        if (status["03_joes_keyQuest"] == "got" ||
+            status["03_joes_keyQuest"] == "end") {
             
             var guard = new NpcGuard("Eddie");
             guard.position = new cc.Point(90, 320)
-            guard.viewCone.rotation = -45;
+            guard.viewCone.rotation = 12;
+            guard.viewCone.distance = 310/PhysicsNode.physicsScale;
             guard.defaultCreatePhysics(world);
-            guard.patrolRoute = [
-                //new PatrolNode({x:90,y:})
+            guard.patrolPath = [
+                new PatrolNode({x:130,y:300}),
+                new PatrolNode({x:80,y:300, duration:0}),
+                new PatrolNode({x:80,y:200, duration:0}),
+                new PatrolNode({x:130,y:200}),
             ];
+            guard.viewCone.onPlayerEnter = function() {
+                var c = new Conversation([
+                    new ConversationLine({actor:guard, text:"What the fuck are you still doing here!?", next:3}),
+                    new ConversationLine({actor:map.player, text:"I forgot the keys at the counter.", next:3})
+                ]);
+                map.addCustomActor(c);
+                c.start();
+            }
             map.addChild(guard);
+            
+            map.showFlavourText({
+                flavour: "He should not see that I'm late.",
+            });
             
         } else if (status["03_joes_keyQuest"] == "unaware" ||
                    status["03_joes_keyQuest"] == "aware") {

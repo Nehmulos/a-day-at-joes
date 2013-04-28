@@ -1,10 +1,9 @@
-function NpcGuard() {
-    NpcGuard.superclass.constructor.call(this);
+function NpcGuard(name) {
+    NpcGuard.superclass.constructor.call(this, name);
     this.bumpLines = []; // say when player bumps into
     this.bumpMessageTimer = 0;
     this.viewCone = new ViewCone();
-    this.viewCone.onPlayerEnter = this.onPlayerFound;
-    this.viewCone.rotation = 0;
+    this.viewCone.onPlayerEnter;
     this.addChild(this.viewCone);
 }
 
@@ -29,9 +28,6 @@ NpcGuard.inherit(Npc, {
         }
     },
     
-    onPlayerFound: function() {
-    },
-    
     onPlayerInView: function() {
     }
 });
@@ -40,7 +36,7 @@ function ViewCone(fixture) {
     ViewCone.superclass.constructor.call(this);
     this.nodes = [];
     this.angle = 45;
-    this.tests = 30;
+    this.tests = 15;
     this.distance = 400/PhysicsNode.physicsScale
     this.onPlayerEnter = null;
 }

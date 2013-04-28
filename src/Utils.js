@@ -51,6 +51,10 @@ Utils.pointOnCircle = function(origin, radius, rotationInDegrees) {
     }
 }
 
+Utils.distance = function(positionA, positionB) {
+    return ((positionA.x - positionB.x) + (positionA.y - positionB.y))/2;
+}
+
 if (!window.assert) {
     window.assert = function(condition) {
         if (!condition) {
