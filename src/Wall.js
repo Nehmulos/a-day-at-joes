@@ -21,6 +21,7 @@ function Wall(positionA, positionB, thickness) {
 }
 
 Wall.inherit(PhysicsNode, {
+    blockSight: true,
 
     defaultCreatePhysics:function(world) {
         this.createPhysics(world,{isStatic:true});

@@ -35,7 +35,7 @@ G.maplist.add("04", "joesback", {
         map.addActor(workbenchr);
         
         var guard = new NpcGuard();
-        guard.position = new cc.Point(360, 250)
+        guard.position = new cc.Point(90, 320)
         guard.defaultCreatePhysics(world);
         map.addChild(guard);
         

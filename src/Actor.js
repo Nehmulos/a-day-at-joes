@@ -12,6 +12,7 @@ function Actor(name) {
 }
 
 Actor.inherit(PhysicsNode, {
+    blockSight: true,
 
     defaultCreatePhysics:function(world) {
         this.createPhysics(world, {fixedRotation: true, damping:4});

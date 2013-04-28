@@ -3,6 +3,7 @@ function NpcGuard() {
     this.bumpLines = []; // say when player bumps into
     this.bumpMessageTimer = 0;
     this.viewCone = new ViewCone();
+    this.viewCone.onPlayerEnter = this.onPlayerFound;
     this.addChild(this.viewCone);
 }
 
@@ -17,6 +18,14 @@ NpcGuard.inherit(Npc, {
     update: function(dt) {
         NpcGuard.superclass.update.call(this, dt);
         this.viewCone.update(dt);
+        
+        if (this.viewCone.playerInView) {
+            this.onPlayerInView();
+        }
+    },
+    
+    onPlayerFound: function() {
+        console.log("found ya");
     },
     
     onPlayerInView: function() {
@@ -28,8 +37,9 @@ function ViewCone(fixture) {
     ViewCone.superclass.constructor.call(this);
     this.nodes = [];
     this.angle = 45;
-    this.tests = 10;
-    this.distance = 200/PhysicsNode.physicsScale
+    this.tests = 30;
+    this.distance = 400/PhysicsNode.physicsScale
+    this.onPlayerEnter = null;
 }
 
 ViewCone.inherit(cc.Node, {
@@ -41,10 +51,12 @@ ViewCone.inherit(cc.Node, {
         this.body.GetWorldCenter().y);
         
         var output = new b2RayCastOutput();
+        var playerFound = false;
 
         for (var i=0; i < this.tests+1; ++i) {
         
             var closestFraction = 1.0;
+            var closestBody = null;
             var rot = this.angle * (i/this.tests);
             var p2 = Utils.pointOnCircle(p1,this.distance,rot);
             
@@ -56,7 +68,9 @@ ViewCone.inherit(cc.Node, {
             input.maxFraction = closestFraction;
             
             for (var b = this.body.m_world.GetBodyList(); b; b=b.m_next) {
-                if (b == this.body) {
+                if (b == this.body || 
+                    (b.GetUserData() && !b.GetUserData().blockSight)
+                ) {
                     continue;
                 }
             
@@ -66,9 +80,16 @@ ViewCone.inherit(cc.Node, {
                         output.fraction < closestFraction
                     ) {
                         closestFraction = output.fraction;
-                        console.log("closer");
+                        closestBody = b;
                     }
                 }
+            }
+            
+            var player = Application.instance.game.map.player;
+            if (closestBody && 
+                !playerFound &&
+                closestBody.GetUserData() == player) {
+                playerFound = true;
             }
             
             /*this.body.m_world.RayCast(function(fixture, normal, fraction) {
@@ -82,6 +103,13 @@ ViewCone.inherit(cc.Node, {
                 p1.y - closestFraction * (p1.y - p2.y) - p1.y
             ));
         }
+        
+        if (playerFound) {
+            if (!this.playerInView && this.onPlayerEnter) {
+                this.onPlayerEnter();
+            }
+        }
+        this.playerInView = playerFound;
     },
     
     draw: function(context) {
