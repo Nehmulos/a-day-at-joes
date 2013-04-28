@@ -1,5 +1,7 @@
 G.maplist.add("01", "home", {
-    startPositions:{"default": {x:200, y:380}},
+    startPositions:{
+        "default": {x:200, y:380, flavour: "I've got to get going"}
+    }, 
     walls: [
         // bounding
         {a:{x:50, y:420}, b:{x:50, y:60}, t:10},
@@ -28,7 +30,5 @@ G.maplist.add("01", "home", {
         kitchen.position = new cc.Point(400, 400)
         map.addActor(kitchen);
     },
-    update: function() {},
-    flavour: "I've got to get going",
-    flavourDuration: 10
+    update: function() {}
 });

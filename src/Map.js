@@ -27,16 +27,19 @@ Map.inherit(cc.Layer, {
         this.createWalls(this.dynamic.walls, world);
                 
         this.dynamic.setup(this, world);
-        Application.instance.game.showFlavourText(
-            this.dynamic.flavour,
-            this.dynamic.flavourDuration
-        );
     },
     
     spawnPlayerAt: function(spawnPoint) {
         var startPos;
         if (this.dynamic.startPositions) {
-            startPos = this.dynamic.startPositions[spawnPoint || "default"];
+            spawnPoint = spawnPoint || "default";
+            startPos = this.dynamic.startPositions[spawnPoint];
+            
+            Application.instance.game.showFlavourText(
+                this.dynamic.startPositions[spawnPoint].flavour,
+                this.dynamic.startPositions[spawnPoint].flavourDuration
+            );
+            this.resetCamera(this.dynamic.startPositions[spawnPoint].scroll);
         } else {
             startPos = new cc.Point(0,0);
         }
@@ -79,9 +82,9 @@ Map.inherit(cc.Layer, {
         }
     },
     
-    resetCamera: function() {
-        if (this.cameraStart) {
-            Application.instance.game.camera.centerAt(this.cameraStart);
+    resetCamera: function(scroll) {
+        if (scroll) {
+            Application.instance.game.camera.centerAt(scroll);
          }
         //this.position = new cc.Point(this.cameraStart.x, this.cameraStart.y);
         //Application.instance.game.camera.trackedEntity = this.player;

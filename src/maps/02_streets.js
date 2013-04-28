@@ -1,12 +1,16 @@
 G.maplist.add("02", "streets", {
     startPositions:{
-        "default": {x:120, y:280},
-        "pavementJoe": {x:700, y:0}
+        "default": {x:120, y:280, flavour: "The traffic here is dangerous"},
+        "pavementJoe": {x:700, y:0, flavour: "I work at Joe's", scroll:{x:900,
+            y:100,}}
     },
     walls: [
         {a:{x:50, y:420}, b:{x:50, y:60}, t:10},
         {a:{x:50, y:420}, b:{x:0, y:420}, t:10},
         {a:{x:50, y:60}, b:{x:0, y:60}, t:10},
+        // joes
+        {a:{x:760, y:420}, b:{x:760, y:60}, t:10},
+        {a:{x:760, y:60}, b:{x:1400, y:60}, t:10},
     ], 
     setup: function(map, world) {
         var pavementl = new NamedSprite({
@@ -50,15 +54,24 @@ G.maplist.add("02", "streets", {
         door.defaultCreatePhysics(world);
         map.addActor(door);
         
+        var pavementj = new NamedSprite({
+            name:"pavement", 
+            borderColor:"gray",
+            height:100,
+            width: 700
+        });
+        pavementj.position = new cc.Point(1000, 0);
+        map.addSprite(pavementj);
+        
         var scrollDown = new Door({
-            x:900,
-            y:100,
             type:"scrollOrder",
             spawn:"pavementJoe"
         }, "↓↓↓↓");
         scrollDown.position = new cc.Point(700, 50);
         scrollDown.defaultCreatePhysics(world);
         map.addActor(scrollDown);
+        
+        
         this.timers = [5, 2, 1, 4];
         this.spawnPositions = [
             {x: 200, y: 480},
@@ -68,6 +81,11 @@ G.maplist.add("02", "streets", {
         ];
         this.world = world;
         this.map = map;
+        
+        var door = new Door("03");
+        door.position = new cc.Point(1000, 60);
+        door.defaultCreatePhysics(world);
+        map.addActor(door);
     },
     spawnCar: function(i) {
         var yMod = i % 2 ? 1 : -1;
@@ -90,7 +108,5 @@ G.maplist.add("02", "streets", {
                 this.spawnCar(i);
             }
         }
-    },
-    flavour: "The traffic here is dangerous",
-    flavourDuration: 10
+    }
 });
