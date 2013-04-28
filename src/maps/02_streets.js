@@ -2,6 +2,8 @@ G.maplist.add("02", "streets", {
     startPositions:{
         "default": {x:120, y:280, flavour: "The traffic here is dangerous"},
         "pavementJoe": {x:700, y:0, flavour: "I work at Joe's", scroll:{x:900,
+            y:100,}},
+        "doorJoe": {x:1000, y:0, flavour: "I work at Joe's", scroll:{x:900,
             y:100,}}
     },
     walls: [

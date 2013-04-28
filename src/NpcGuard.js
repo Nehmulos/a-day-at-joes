@@ -57,7 +57,7 @@ ViewCone.inherit(cc.Node, {
         
             var closestFraction = 1.0;
             var closestBody = null;
-            var rot = this.angle * (i/this.tests);
+            var rot = this.roation + (this.angle * (i/this.tests));
             var p2 = Utils.pointOnCircle(p1,this.distance,rot);
             
             // test for all bodies

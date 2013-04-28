@@ -1,34 +1,44 @@
 G.maplist.add("05", "joesgarage", {
     startPositions:{
-        "default": {x:200, y:380, flavour: ""}
+        "default": {x:300, y:100, flavour: ""}
     },
     walls: [
         // bounding
         {a:{x:50, y:420}, b:{x:50, y:60}, t:10},
-        {a:{x:50, y:420}, b:{x:700, y:420}, t:10},
-        {a:{x:700, y:420}, b:{x:700, y:60}, t:10},
-        {a:{x:700, y:60}, b:{x:50, y:60}, t:10},
-        // kitchen
-        {a:{x:320, y:420}, b:{x:320, y:160}, t:10},
-        {a:{x:470, y:420}, b:{x:470, y:160}, t:10},
-        {a:{x:320, y:160}, b:{x:400, y:160}, t:10},
-        // misc bottom r
-        {a:{x:600, y:60}, b:{x:600, y:275}, t:10},
-        {a:{x:600, y:275}, b:{x:700, y:275}, t:10},
+        {a:{x:50, y:420}, b:{x:500, y:420}, t:10},
+        {a:{x:500, y:420}, b:{x:500, y:60}, t:10},
+        {a:{x:500, y:60}, b:{x:50, y:60}, t:10},
+        // misc bottom l
+        {a:{x:350, y:60}, b:{x:350, y:275}, t:10},
+        {a:{x:350, y:275}, b:{x:400, y:275}, t:10},
     ],
     setup: function(map, world) {
-        var door = new Door("02");
-        door.position = new cc.Point(700, 350);
+        var door = new Door("04", null, "garage");
+        door.position = new cc.Point(300, 60);
         door.defaultCreatePhysics(world);
         map.addActor(door);
         
-        var bed = new NamedSprite({name:"bed", borderColor:"blue"});
-        bed.position = new cc.Point(80, 400)
-        map.addActor(bed);
+        var car = new StaticObject();
+        car.setSprite(new NamedSprite({
+            name:"Car",
+            borderColor: "red",
+            width: 70,
+            height: 50
+        }));
+        car.position = new cc.Point(200, 350);
+        car.defaultCreatePhysics(world);
+        map.addActor(car);
         
-        var kitchen = new NamedSprite({name:"kitchen", borderColor:"orange"});
-        kitchen.position = new cc.Point(400, 400)
-        map.addActor(kitchen);
+        var gate = new StaticObject();
+        gate.setSprite(new NamedSprite({
+            name:"Gate",
+            borderColor: "green",
+            width: 120,
+        }));
+        gate.rotation = 90;
+        gate.position = new cc.Point(50, 350);
+        gate.defaultCreatePhysics(world);
+        map.addActor(gate);
     },
     update: function() {}
 });

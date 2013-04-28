@@ -14,8 +14,8 @@ Npc.inherit(Actor, {
         
         if (this.follow) {
             var targetDeg = Utils.degreesToPoint(this.follow.position, this.position)
-            var target = Utils.pointOnCircle(this.follow.position, this.contentSize.width*3, targetDeg);
-            this.moveTowards(target);
+            var target = Utils.pointOnCircle(this.follow.position, this.contentSize.width*3, Math.floor(targetDeg));
+            this.moveTowards({x:Math.floor(target.x), y:Math.floor(target.y)});
         }
     },
     

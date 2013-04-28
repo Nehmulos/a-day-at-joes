@@ -1,6 +1,7 @@
 G.maplist.add("04", "joesback", {
     startPositions:{
-        "default": {x:300, y:100, flavour: "Eddie is my boss around here"}
+        "default": {x:300, y:100, flavour: "Eddie is my boss around here"},
+        "garage": {x:400, y:350}
     }, 
     walls: [
         // bounding
@@ -18,7 +19,7 @@ G.maplist.add("04", "joesback", {
         garageDoor.defaultCreatePhysics(world);
         map.addActor(garageDoor);
         
-        var door = new Door("03", "door");
+        var door = new Door("03", "door", "staff");
         door.position = new cc.Point(300, 60);
         door.defaultCreatePhysics(world);
         map.addActor(door);
@@ -39,10 +40,28 @@ G.maplist.add("04", "joesback", {
         //////////
         var status = G.restoreJson("storyProgress");
         if (status["03_joes_keyQuest"] == "got") {
-            var guard = new NpcGuard();
+            
+            var guard = new NpcGuard("Eddie");
             guard.position = new cc.Point(90, 320)
             guard.defaultCreatePhysics(world);
+            guard.patrolRoute = [
+                //new PatrolNode({x:90,y:})
+            ];
             map.addChild(guard);
+            
+        } else if (status["03_joes_keyQuest"] == "unaware" ||
+                   status["03_joes_keyQuest"] == "aware") {
+            
+            var eddie = new Npc("Eddie");
+            eddie.position = new cc.Point(90, 220)
+            eddie.defaultCreatePhysics(world);
+            eddie.bumpLines = [
+                "What are still doing here!? Get going!",
+                "I'm busy working what are you still doing here!?",
+                "You better piss off and get into that car, if you like beeing alive."
+            ]
+            map.addChild(eddie);
+            
         } else {
             // lock garage
             garageDoor.target = null;

@@ -1,6 +1,7 @@
 G.maplist.add("03", "joes", {
     startPositions:{
-        "default": {x:500, y:100, flavour:"but I'm not in catering business"}
+        "default": {x:500, y:100, flavour:"but I'm not in catering business"},
+        "staff": {x:200, y:350, flavour:"but I'm not in catering business"}
     },
     walls: [
         // bounding
@@ -10,19 +11,12 @@ G.maplist.add("03", "joes", {
         {a:{x:700, y:60}, b:{x:50, y:60}, t:10},
     ],
     setup: function(map, world) {
-        var door = new Door({
-            type:"loadOrder",
-            id:"02",
-            spawn:"pavementJoe"
-        });
+        var door = new Door("02", null, "doorJoe");
         door.position = new cc.Point(500, 60);
         door.defaultCreatePhysics(world);
         map.addActor(door);
         
-        var staffdoor = new Door({
-            type:"loadOrder",
-            id:"04",
-        }, "staff door");
+        var staffdoor = new Door("04", "staff door");
         staffdoor.position = new cc.Point(200, 420);
         staffdoor.defaultCreatePhysics(world);
         map.addActor(staffdoor);
