@@ -4,6 +4,7 @@ function NpcGuard() {
     this.bumpMessageTimer = 0;
     this.viewCone = new ViewCone();
     this.viewCone.onPlayerEnter = this.onPlayerFound;
+    this.viewCone.rotation = 0;
     this.addChild(this.viewCone);
 }
 
@@ -22,14 +23,16 @@ NpcGuard.inherit(Npc, {
         if (this.viewCone.playerInView) {
             this.onPlayerInView();
         }
+        //this.viewCone.rotation++;
+        if (this.viewCone.rotation > 360) {
+            this.viewCone.rotation = 0;
+        }
     },
     
     onPlayerFound: function() {
-        console.log("found ya");
     },
     
     onPlayerInView: function() {
-        console.log("see ya");
     }
 });
 
@@ -52,12 +55,13 @@ ViewCone.inherit(cc.Node, {
         
         var output = new b2RayCastOutput();
         var playerFound = false;
+        var player = Application.instance.game.map.player;
 
         for (var i=0; i < this.tests+1; ++i) {
         
             var closestFraction = 1.0;
             var closestBody = null;
-            var rot = this.roation + (this.angle * (i/this.tests));
+            var rot = -this.rotation + (this.angle * (i/this.tests));
             var p2 = Utils.pointOnCircle(p1,this.distance,rot);
             
             // test for all bodies
@@ -85,22 +89,18 @@ ViewCone.inherit(cc.Node, {
                 }
             }
             
-            var player = Application.instance.game.map.player;
             if (closestBody && 
                 !playerFound &&
                 closestBody.GetUserData() == player) {
                 playerFound = true;
             }
             
-            /*this.body.m_world.RayCast(function(fixture, normal, fraction) {
-                console.log("call");
-            }, p1, p2);
-            */
-            
+            var drawRot = (this.angle * (i/this.tests));
+            var drawP2 = Utils.pointOnCircle(p1,this.distance,drawRot);
             
             this.nodes.push(new cc.Point(
-                p1.x - closestFraction * (p1.x - p2.x) - p1.x,
-                p1.y - closestFraction * (p1.y - p2.y) - p1.y
+                p1.x - closestFraction * (p1.x - drawP2.x) - p1.x,
+                p1.y - closestFraction * (p1.y - drawP2.y) - p1.y
             ));
         }
         

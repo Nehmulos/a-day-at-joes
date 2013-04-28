@@ -53,6 +53,16 @@ CollisionHandler.inherit(b2ContactListener, {
                 this.playerNpcCollision(objectB, objectA);
             }
         }
+        
+        if (objectA && objectB) {
+            if (objectA.type == "player" && objectB.type == "staticObject") {
+                this.playerStaticObjectCollision(objectA, objectB);
+            } else if(objectB.type == "player" && objectA.type == "staticObject") {
+                this.playerStaticObjectCollision(objectB, objectA);
+            }
+        }
+        
+        
     },
     
     EndContact: function(contact, manifold) {
@@ -96,5 +106,11 @@ CollisionHandler.inherit(b2ContactListener, {
     
     playerNpcCollision: function(player, npc) {
         npc.onBump(player);
+    },
+    
+    playerStaticObjectCollision: function(player, obj) {
+        if (obj.onTouch) {
+            obj.onTouch(player);
+        }
     }
 });

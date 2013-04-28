@@ -39,6 +39,40 @@ G.maplist.add("05", "joesgarage", {
         gate.position = new cc.Point(50, 350);
         gate.defaultCreatePhysics(world);
         map.addActor(gate);
+        
+        ////////////
+        // ACTORS
+        ////////////
+        var status = G.restoreJson("storyProgress");
+        if (status["03_joes_keyQuest"] == "got") {
+            car.onTouch = function(actor) {
+                if (actor == map.player) {
+                    Application.instance.game.nextMap = {
+                        type: "loadOrder",
+                        id: "06"
+                    }
+                }
+            }
+        } else if (status["03_joes_keyQuest"] == "aware") {
+            
+        } else {
+            car.onTouch = function(actor) {
+                if (actor == map.player) {
+                    actor.say("I forgot the key's at the counter", 10);
+                    
+                    status["03_joes_keyQuest"] = "aware";
+                    G.storeJson("storyProgress", status);
+                    car.onTouch = null;
+                }
+            }
+            
+            var richard = new Npc("Richard");
+            richard.position = new cc.Point(200, 100)
+            richard.defaultCreatePhysics(world);
+            richard.follow = car;
+            richard.bumpLines = ["Go, unlock the car."];
+            map.addChild(richard);
+        }
     },
     update: function() {}
 });

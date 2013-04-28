@@ -43,6 +43,7 @@ G.maplist.add("04", "joesback", {
             
             var guard = new NpcGuard("Eddie");
             guard.position = new cc.Point(90, 320)
+            guard.viewCone.rotation = -45;
             guard.defaultCreatePhysics(world);
             guard.patrolRoute = [
                 //new PatrolNode({x:90,y:})

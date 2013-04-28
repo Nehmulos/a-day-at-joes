@@ -1,7 +1,7 @@
 G.maplist.add("03", "joes", {
     startPositions:{
         "default": {x:500, y:100, flavour:"but I'm not in catering business"},
-        "staff": {x:200, y:350, flavour:"but I'm not in catering business"}
+        "staff": {x:200, y:350}
     },
     walls: [
         // bounding
@@ -48,13 +48,6 @@ G.maplist.add("03", "joes", {
             */
         }
         
-        var guest = new Npc("Bob");
-        guest.position = new cc.Point(360, 250)
-        guest.defaultCreatePhysics(world);
-        guest.bumpLines = ["hey, watch where you're going!"];
-        map.addActor(guest);
-        
-        
         var counter = new StaticObject();
         counter.setSprite(new NamedSprite({
             name:"counter",
@@ -77,6 +70,32 @@ G.maplist.add("03", "joes", {
         counterBlock.rotation = 90;
         counterBlock.defaultCreatePhysics(world);
         map.addActor(counterBlock);
+        
+        /////////
+        // ACTORS
+        /////////
+        var guest = new Npc("Bob");
+        guest.position = new cc.Point(360, 250)
+        guest.defaultCreatePhysics(world);
+        guest.bumpLines = ["hey, watch where you're going!"];
+        map.addActor(guest);
+        
+        var status = G.restoreJson("storyProgress");
+        if (status["03_joes_keyQuest"] == "aware") {
+            var keys = new StaticObject();
+            keys.setSprite(new NamedSprite({name:"keys",borderColor: "gray",}));
+            keys.position = new cc.Point(400, 390);
+            keys.defaultCreatePhysics(world);
+            keys.onTouch = function(actor) {
+                if (actor == map.player) {
+                    keys.destroyed = true;
+                    status["03_joes_keyQuest"] = "got";
+                    G.storeJson("storyProgress",status);
+                }
+            }
+            map.addActor(keys);
+        }
+            
     },
     update: function() {},
     flavour: "I've got to get going",
