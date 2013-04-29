@@ -23,12 +23,28 @@ G.maplist.add("01", "home", {
         door.defaultCreatePhysics(world);
         map.addActor(door);
         
-        var bed = new NamedSprite({name:"bed", borderColor:"blue"});
-        bed.position = new cc.Point(80, 400)
+        var bed = new NamedSprite({
+            name:"bed",
+            borderColor:"blue",
+            width: 80,
+            height: 40
+        });
+        bed.position = new cc.Point(100, 390)
         map.addActor(bed);
         
-        var kitchen = new NamedSprite({name:"kitchen", borderColor:"orange"});
-        kitchen.position = new cc.Point(400, 400)
+        var kitchen = new StaticObject();
+        kitchen.setSprite(new NamedSprite({
+            name:"kitchen",
+            borderColor:"orange",
+            width: 130,
+            height: 30
+        }));
+        kitchen.position = new cc.Point(395, 395);
+        kitchen.defaultCreatePhysics(world);
+        kitchen.onTouch = function() {
+            map.player.say("I'll cleanup another day");
+            kitchen.onTouch = null;
+        }
         map.addActor(kitchen);
     },
     update: function() {}

@@ -103,7 +103,7 @@ G.maplist.add("04", "joesback", {
             
             var c = new Conversation([
                 new ConversationLine({next:1}),
-                new ConversationLine({actor:richard, text:"Hi", next:6}),
+                new ConversationLine({actor:richard, text:"Hi", next:3}),
                 new ConversationLine({actor:eddie, text:"I'm very busy today.", next:3}),
                 new ConversationLine({actor:eddie, text:"You've gotta to take the freshman for a ride.", next:3}),
                 new ConversationLine({actor:richard, text:"I won't be a burden.", next:3, nextCallback: richardFollow}),
