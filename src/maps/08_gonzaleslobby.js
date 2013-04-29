@@ -38,6 +38,40 @@ G.maplist.add("08", "lobby", {
         counter.defaultCreatePhysics(world);
         map.addActor(counter);
         
+        var status = G.restoreJson("storyProgress");
+        if (status["07_gonzales_quest1"] == "escape") {
+
+            Audiomanager.instance.play("win");
+
+            var youWin = new NamedSprite({
+                name:"YOU WIN!",
+                borderColor:"yellow",
+                height:50,
+                width: 200
+            });
+            youWin.position = new cc.Point(400, 300)
+            map.addSprite(youWin)
+            
+            var credits = new NamedSprite({name: "Credits",borderColor:"gray"});
+            credits.position = new cc.Point(400, 250)
+            map.addSprite(credits);
+
+            var lineA = new NamedSprite({name: "Create by Nehmulos",borderColor:"gray"});
+            lineA.position = new cc.Point(400, 220)
+            map.addSprite(lineA);
+            
+            var lineb = new NamedSprite({name: "For Ludum Dare #26 done in 48 hours",borderColor:"gray"});
+            lineb.position = new cc.Point(400, 180)
+            map.addSprite(lineb);
+            
+            var linec = new NamedSprite({name: "Thanks to everybody who writes open source software",borderColor:"gray"});
+            linec.position = new cc.Point(400, 100)
+            map.addSprite(linec);
+            
+            
+            map.showFlavourText({text: "The End"});
+        }
+        
     },
     update: function() {}
 });

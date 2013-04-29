@@ -239,12 +239,15 @@ $(function() {
     // TODO integrate audio loading into the preloader
     registerAudio("door");
     registerAudio("carcrash");
+    registerAudio("shoot");
+    registerAudio("win");
+    /*
     registerAudio("walk1");
     registerAudio("walk2");
     registerAudio("walk3");
     registerAudio("walk4");
     registerAudio("walk5");
-    
+    */
     
     //registerAudio("village-tired");
     //Audiomanager.instance.playMusic("village-tired");

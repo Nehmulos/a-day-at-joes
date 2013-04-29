@@ -92,7 +92,8 @@ Game.inherit(Observable, {
     },
     
     death: function(reason) {
-        this.nextMap = this.map.id;
+        this.nextMap = G.restoreJson("checkpoint");
+        this.nextMap.type = "loadOrder"; 
         var deathCount = G.restoreJson("deathCount");
         deathCount[reason] = deathCount[reason] +1 || 1;
         G.storeJson("deathCount", deathCount);
