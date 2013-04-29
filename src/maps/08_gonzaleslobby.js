@@ -56,7 +56,7 @@ G.maplist.add("08", "lobby", {
             credits.position = new cc.Point(400, 250)
             map.addSprite(credits);
 
-            var lineA = new NamedSprite({name: "Create by Nehmulos",borderColor:"gray"});
+            var lineA = new NamedSprite({name: "Created by Nehmulos",borderColor:"gray"});
             lineA.position = new cc.Point(400, 220)
             map.addSprite(lineA);
             
@@ -64,7 +64,7 @@ G.maplist.add("08", "lobby", {
             lineb.position = new cc.Point(400, 180)
             map.addSprite(lineb);
             
-            var linec = new NamedSprite({name: "Thanks to everybody who writes open source software",borderColor:"gray"});
+            var linec = new NamedSprite({name: "Thanks to everyone who writes open source software",borderColor:"gray"});
             linec.position = new cc.Point(400, 100)
             map.addSprite(linec);
             
